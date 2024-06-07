@@ -17,7 +17,8 @@ class ProductGrid extends StatefulWidget {
 class _ProductGridState extends State<ProductGrid> {
   @override
   Widget build(BuildContext context) {
-    final Products productsProv = Provider.of<Products>(context, listen: false);
+    final Products productsProv = Provider.of<Products>(context,
+        listen: true); // refresh if product added new item.
     final List<Product> products = widget.showFavorite
         ? productsProv.favoritesItems
         : productsProv.products;

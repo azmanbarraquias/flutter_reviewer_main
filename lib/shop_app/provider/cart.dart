@@ -39,13 +39,15 @@ class Cart with ChangeNotifier {
       return;
     }
 
+    // remove -1 is quantity is more than 1 else remove.
     if (_items[productID]!.quantity > 1) {
       _items.update(
-            productID!,
-          (product) => CartProduct(
-              id: product.id,
-              product: product.product,
-              quantity: product.quantity - 1));
+        productID!,
+        (product) => CartProduct(
+            id: product.id,
+            product: product.product,
+            quantity: product.quantity - 1),
+      );
     } else {
       _items.remove(productID);
     }

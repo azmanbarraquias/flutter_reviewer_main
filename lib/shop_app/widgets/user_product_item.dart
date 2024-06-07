@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reviewer_main/shop_app/screens/edit_product_screen.dart';
 
 import '../provider/product.dart';
 
@@ -30,7 +31,9 @@ class UserProductItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(EditProductScreen.routeName, arguments: product);
+                },
                 icon: Icon(
                   Icons.edit,
                   color: Theme.of(context).primaryColor,
