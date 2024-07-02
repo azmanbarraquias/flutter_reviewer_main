@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reviewer_main/x_experiment/flutter_lifecycle.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'product.dart';
 
@@ -39,53 +42,100 @@ class Products with ChangeNotifier {
   ];
 
   List<Product> get products {
-    // return a copy
+// return a copy
     return [..._products];
   }
 
-  void addProduct(Product product) {
-    var idProduct = Product(
-        id: DateTime.now().toString(),
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        imageUrl: product.imageUrl);
-    _products.add((idProduct));
-    notifyListeners();
+  Future<void> addProduct(Product product) async {
+    var url = Uri.https(
+      'myflutter-update-default-rtdb.firebaseio.com',
+      '/products.json',
+    );
+
+    return http
+        .post(url,
+            body: json.encoder.convert({
+              'title': product.title,
+              'description': product.description,
+              'imageUrl': product.imageUrl,
+              'price': product.price,
+              'isFavorite': product.isFavorite,
+            }))
+        .then((response) {
+      // since post is a future function we can use then.
+
+      var idProduct = Product(
+          id: json.decoder.convert(response.body)['name'],
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl);
+
+      _products.add((idProduct));
+
+      notifyListeners();
+
+      xPrint('Response: ${json.decoder.convert(response.body)}');
+    }).catchError((error) {
+      print(' $error addProduct()');
+      throw error;
+    });
   }
 
-  // bool _showFavorites = false;
-  //
-  // bool get isFev {
-  //   return _showFavorites;
-  // }
-  //
-  // void showFev() {
-  //   _showFavorites = true;
-  //   notifyListeners();
-  //
-  // }
-  //
-  // void showAll() {
-  //   _showFavorites = false;
-  //   notifyListeners();
-  //
-  // }
+// bool _showFavorites = false;
+//
+// bool get isFev {
+//   return _showFavorites;
+// }
+//
+// void showFev() {
+//   _showFavorites = true;
+//   notifyListeners();
+//
+// }
+//
+// void showAll() {
+//   _showFavorites = false;
+//   notifyListeners();
+//
+// }
 
   Product findByProduct(Product product) {
     return products.firstWhere((productProv) => productProv.id == product.id);
   }
 
-  // dart don't have overloading
+// dart don't have overloading
   Product findById(String productID) {
     return products.firstWhere((productProv) => productProv.id == productID);
   }
 
+  void updateProduct(Product productUpdate) {
+    final prodIndex =
+        products.indexWhere((product) => product.id == productUpdate.id);
+    if (prodIndex >= 0) {
+      _products[prodIndex] = productUpdate;
+      notifyListeners();
+    } else {
+      xPrint('Product $prodIndex not found');
+    }
+  }
+
+  void deleteProduct(Product productUpdate) {
+    final prodIndex =
+        products.indexWhere((product) => product.id == productUpdate.id);
+    if (prodIndex >= 0) {
+      _products.removeAt(prodIndex);
+      notifyListeners();
+    } else {
+      xPrint('Product $prodIndex not found');
+    }
+  }
+
   List<Product> get favoritesItems {
-    // if (_showFavorites) {
+// if (_showFavorites) {
     return _products.where((product) => product.isFavorite).toList();
-    // } else {
-    //   return products;
-    // }
+// } else {
+//   return products;
+// }
   }
 }

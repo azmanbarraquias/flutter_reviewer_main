@@ -52,7 +52,7 @@ dependencies:
   cupertino_icons: any # Only required if you use Cupertino (iOS style) icons
   provider: any
   tuple: any
-  device_preview: any
+  device_preview: ^1.2.0
   feedback: any
 
   flutter_glow: any
@@ -73,8 +73,10 @@ dependencies:
   url_launcher: any
   string_scanner: any
   intl: any
-  flutter_cache_manager: any
-  flutter_emoji: any
+  flutter_cache_manager: any # 3.3.2 https://pub.dev/packages/flutter_cache_manager
+  flutter_emoji: any # 2.5.1 https://pub.dev/packages/flutter_emoji
+  share_plus: any # 9.0.0 https://pub.dev/packages/share_plus
+  file_picker: any
 
 dev_dependencies:
   flutter_test:
@@ -106,6 +108,7 @@ flutter:
     - assets/instagram_bottom_navigation_bar/assets/vectors/
     - assets/instagram_bottom_navigation_bar/assets/images/
     - assets/
+    - assets/deep_quiz_img.png
     # Include a single source code file:
     # Include all files under a subfoler by adding trailing "/":
     - lib/template/
