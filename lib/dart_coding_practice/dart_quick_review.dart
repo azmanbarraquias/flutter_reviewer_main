@@ -1,24 +1,33 @@
-
-import 'package:flutter/material.dart';
-
 enum Light { on, off, auto }
 
-void main() {
-  String? nonNullableVariable; // Non-nullable variable
-  nonNullableVariable = null;
-  var asd = Text(nonNullableVariable!);
-  print(asd.data);
+void main() async {
+  // String? nonNullableVariable; // Non-nullable variable
+  // nonNullableVariable = null;
+  // var asd = Text(nonNullableVariable!);
+  // print(asd.data);
+
+  print('Start');
+  await pleaseWait();
+  print('End');
 }
 
-void asd () {
+Future<void> pleaseWait() async {
+  Future.delayed(const Duration(seconds: 5), () {
+    print('Done');
+  }).then((count) {
+    print(count);
+  });
+}
+
+void asd() {
   final fixedLengthList = List<int>.filled(5, 0); // Creates fixed-length list.
   print(fixedLengthList); // [0, 0, 0, 0, 0]
   fixedLengthList[0] = 87;
   fixedLengthList.setAll(1, [1, 2, 3]);
   print(fixedLengthList); // [87, 1, 2, 3, 0]
 // Fixed length list length can't be changed or increased
-  fixedLengthList.length = 0;  // Throws
-  fixedLengthList.add(499);    // Throws
+  fixedLengthList.length = 0; // Throws
+  fixedLengthList.add(499); // Throws
 
   // Fixed-size list
   var pastries = List<String>.filled(3, 'not available');

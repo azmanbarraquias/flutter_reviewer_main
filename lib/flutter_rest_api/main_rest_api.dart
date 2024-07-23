@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_reviewer_main/flutter_rest_api/views/home_page_simple.dart';
+import 'package:flutter_reviewer_main/flutter_rest_api/views/home_page_yugioh.dart';
 
 import 'views/home_page_pokemon.dart';
 
@@ -13,9 +15,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      // home: HomePageSimple(),
+      home: HomePageSimple(),
       // home: HomePageYugiOh(),
-      home: HomePagePokemon(),
+      // home: HomePagePokemon(),
     );
   }
 }

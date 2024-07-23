@@ -47,12 +47,54 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    var url = Uri.https(
-      'myflutter-update-default-rtdb.firebaseio.com',
+    const urlLink = 'myflutter-update-default-rtdb.firebaseio2.com';
+    try {
+      final url = Uri.https(
+        urlLink,
+        '/products.json',
+      );
+
+      final response = await http.post(url,
+          body: json.encoder.convert({
+            'title': product.title,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+            'price': product.price,
+            'isFavorite': product.isFavorite,
+          }));
+      // .then((response) {
+      // since post is a future function we can use then.
+
+      var idProduct = Product(
+          id: json.decoder.convert(response.body)['name'],
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl);
+
+      _products.add((idProduct));
+
+      notifyListeners();
+
+      xPrint('Response: ${json.decoder.convert(response.body)}');
+    } catch (error) {
+      xPrint('error> $error, at addProduct()');
+      rethrow;
+    }
+    // }).catchError((error) {
+    //   xPrint('error> $error, at addProduct()');
+    //   throw error;
+    // });
+  }
+
+  Future<void> addProduct1(Product product) async {
+    const urlLink = 'myflutter-update-default-rtdb.firebaseio.com';
+    final url = Uri.https(
+      urlLink,
       '/products.json',
     );
 
-    return http
+    await http
         .post(url,
             body: json.encoder.convert({
               'title': product.title,
@@ -77,7 +119,7 @@ class Products with ChangeNotifier {
 
       xPrint('Response: ${json.decoder.convert(response.body)}');
     }).catchError((error) {
-      print(' $error addProduct()');
+      xPrint('error> $error, at addProduct()');
       throw error;
     });
   }

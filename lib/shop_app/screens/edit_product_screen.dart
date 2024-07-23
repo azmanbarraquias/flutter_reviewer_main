@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/xprint.dart';
@@ -55,6 +56,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     setState(() {});
   }
 
+  void setStateLoading(value) => setState(() => _isLoading = value);
+
   Future<void> _saveForm() async {
     final isValid = _form.currentState?.validate();
 
@@ -69,17 +72,68 @@ class _EditProductScreenState extends State<EditProductScreen> {
     xPrint(_editedProduct.price);
     xPrint(_editedProduct.imageUrl);
 
-    setState(() {
-      _isLoading = true;
-    });
+    setStateLoading(true);
+
+// Editing, Update existing product
+    if (_editedProduct.id != null) {
+      Provider.of<Products>(context, listen: false).updateProduct(_editedProduct);
+      setStateLoading(false);
+      Navigator.of(context).pop();
+    } else {
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (error) {
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text('An error occurred!'),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('Message:'),
+                      const Gap(5),
+                      Text(
+                        '$error',
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.of(ctx).pop(),
+                        child: const Text('Close'))
+                  ],
+                ));
+      } finally {
+        setStateLoading(false);
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
+  Future<void> _saveForm1() async {
+    final isValid = _form.currentState?.validate();
+
+    if (!isValid!) {
+      return;
+    }
+
+    _form.currentState?.save();
+
+    xPrint(_editedProduct.title);
+    xPrint(_editedProduct.description);
+    xPrint(_editedProduct.price);
+    xPrint(_editedProduct.imageUrl);
+
+    setStateLoading(true);
 
 // Editing, Update existing product
     if (_editedProduct.id != null) {
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct);
-      setState(() {
-        _isLoading = false;
-      });
+      setStateLoading(false);
       Navigator.of(context).pop();
     } else {
       await Provider.of<Products>(context, listen: false)
@@ -89,19 +143,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
             context: context,
             builder: (ctx) => AlertDialog(
                   title: const Text('An error occurred!'),
-                  content: Text('Something went wrong! \n $error'),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('Message:'),
+                      const Gap(5),
+                      Text(
+                        '$error',
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
+                    ],
+                  ),
                   actions: [
                     TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: () => Navigator.of(context).pop(),
                         child: const Text('Close'))
                   ],
                 ));
       }).then((v) {
-        setState(() {
-          _isLoading = false;
-        });
+        setStateLoading(false);
         Navigator.of(context).pop();
       });
     }

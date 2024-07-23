@@ -19,32 +19,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final providersList = [
+      ChangeNotifierProvider(create: (ctx) => Products()),
+      ChangeNotifierProvider(create: (ctx) => Cart()),
+      ChangeNotifierProvider(create: (ctx) => Orders()),
+    ];
+
+    final themeData = ThemeData(
+      primarySwatch: Colors.blue,
+      appBarTheme: AppBarTheme(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.blue,
+        titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize),
+      ),
+    );
+
+    final routeList = {
+      ProductDetailsScreen.routeName: (ctx) => const ProductDetailsScreen(),
+      CartScreen.routeName: (ctx) => const CartScreen(),
+      OrdersScreen.routeName: (ctx) => const OrdersScreen(),
+      UserProductScreen.routeName: (ctx) => const UserProductScreen(),
+      EditProductScreen.routeName: (ctx) => const EditProductScreen(),
+    };
+
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (ctx) => Products()),
-        ChangeNotifierProvider(create: (ctx) => Cart()),
-        ChangeNotifierProvider(create: (ctx) => Orders()),
-      ],
+      providers: providersList,
       child: MaterialApp(
         title: 'MyShop',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            appBarTheme: AppBarTheme(
-                iconTheme: const IconThemeData(color: Colors.white),
-                backgroundColor: Colors.blue,
-                titleTextStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize:
-                        Theme.of(context).textTheme.headlineMedium?.fontSize)),
-            primarySwatch: Colors.blue),
+        theme: themeData,
         home: const ProductsOverviewScreen(),
-        routes: {
-          ProductDetailsScreen.routeName: (ctx) => const ProductDetailsScreen(),
-          CartScreen.routeName: (ctx) => const CartScreen(),
-          OrdersScreen.routeName: (ctx) => const OrdersScreen(),
-          UserProductScreen.routeName: (ctx) => const UserProductScreen(),
-          EditProductScreen.routeName: (ctx) => const EditProductScreen(),
-        },
+        routes: routeList,
       ),
     );
   }
