@@ -48,6 +48,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           (!urlText.startsWith('http') && !urlText.startsWith('https')) ||
           (!urlText.endsWith('.png') &&
               !urlText.endsWith('.jpg') &&
+              !urlText.endsWith('.webp') &&
               !urlText.endsWith('.jpeg') &&
               !urlText.endsWith('.gif'))) {
         return;
@@ -58,7 +59,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void setStateLoading(value) => setState(() => _isLoading = value);
 
-  Future<void> _saveForm() async {
+  Future<void> _saveForm(ctx) async {
     final isValid = _form.currentState?.validate();
 
     if (!isValid!) {
@@ -67,16 +68,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
     _form.currentState?.save();
 
-    xPrint(_editedProduct.title);
-    xPrint(_editedProduct.description);
-    xPrint(_editedProduct.price);
-    xPrint(_editedProduct.imageUrl);
+    // xPrint(_editedProduct.title);
+    // xPrint(_editedProduct.description);
+    // xPrint(_editedProduct.price);
+    // xPrint(_editedProduct.imageUrl);
 
     setStateLoading(true);
 
 // Editing, Update existing product
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false).updateProduct(_editedProduct);
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_editedProduct);
       setStateLoading(false);
       Navigator.of(context).pop();
     } else {
@@ -84,8 +86,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
         await Provider.of<Products>(context, listen: false)
             .addProduct(_editedProduct);
       } catch (error) {
-        showDialog(
-            context: context,
+        xPrint('_saveForm() $error');
+        await showDialog(
+            context: ctx,
             builder: (ctx) => AlertDialog(
                   title: const Text('An error occurred!'),
                   content: Column(
@@ -108,7 +111,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ));
       } finally {
         setStateLoading(false);
-        Navigator.of(context).pop();
+        Navigator.of(ctx).pop();
       }
     }
   }
@@ -222,7 +225,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       appBar: AppBar(
         title: const Text('Edit Product'),
         actions: [
-          IconButton(onPressed: _saveForm, icon: const Icon(Icons.save)),
+          IconButton(
+              onPressed: () => _saveForm(context),
+              icon: const Icon(Icons.save)),
         ],
       ),
       body: _isLoading
@@ -287,7 +292,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               id: _editedProduct.id,
                               title: _editedProduct.title,
                               description: _editedProduct.description,
-                              price: double.parse(value!),
+                              price: num.parse(value!),
                               imageUrl: _editedProduct.imageUrl,
                               isFavorite: _editedProduct.isFavorite);
                         }),
@@ -357,6 +362,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               if (!value.endsWith('.png') &&
                                   !value.endsWith('.jpg') &&
                                   !value.endsWith('.jpeg') &&
+                                  !value.endsWith('.webp') &&
                                   !value.endsWith('.gif')) {
                                 return 'Please enter a valid image URL';
                               }
@@ -372,7 +378,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   isFavorite: _editedProduct.isFavorite);
                             },
                             onFieldSubmitted: (_) {
-                              _saveForm();
+                              _saveForm(context);
                             },
                           ),
                         )

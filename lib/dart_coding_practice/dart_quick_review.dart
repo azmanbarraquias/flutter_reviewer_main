@@ -1,13 +1,40 @@
 enum Light { on, off, auto }
 
-void main() async {
-  // String? nonNullableVariable; // Non-nullable variable
-  // nonNullableVariable = null;
-  // var asd = Text(nonNullableVariable!);
-  // print(asd.data);
+// void main() async {
+//   // String? nonNullableVariable; // Non-nullable variable
+//   // nonNullableVariable = null;
+//   // var asd = Text(nonNullableVariable!);
+//   // print(asd.data);
+//
+//   // print('Start');
+//   // await pleaseWait();
+//   // print('End');
+//
+//   String s = "hey👀";
+//   print(s.runes.length); // prints 4
+//   print(s.length); //
+// }
 
+// This example shows how *not* to write asynchronous Dart code.
+
+String createOrderMessage() {
+  print('Start createOrderMessage');
+  var order = fetchUserOrder();
+  print('END createOrderMessage');
+  return 'Your order is: $order';
+}
+
+Future<String> fetchUserOrder() {
+  print('Start fetchUserOrder');
+  return Future.delayed(const Duration(seconds: 5), () {
+    print('END fetchUserOrder');
+    return 'Large Latte';
+  });
+}
+
+void main() {
   print('Start');
-  await pleaseWait();
+  print(createOrderMessage());
   print('End');
 }
 

@@ -77,6 +77,8 @@ dependencies:
   flutter_emoji: any # 2.5.1 https://pub.dev/packages/flutter_emoji
   share_plus: any # 9.0.0 https://pub.dev/packages/share_plus
   file_picker: any
+  flutter_localization: any # ^0.2.1 https://pub.dev/packages/flutter_localization
+
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +114,8 @@ flutter:
     # Include a single source code file:
     # Include all files under a subfoler by adding trailing "/":
     - lib/template/
+
+    - lang/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../x_experiment/flutter_lifecycle.dart';
 import '../provider/cart.dart';
 
+import '../provider/products.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/products_grid.dart';
 import '../widgets/badge.dart' as consumer_badge;
@@ -22,9 +23,46 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   bool _showOnlyFavorites = false;
+  bool _isInit = true;
+  bool _isLoading = false;
+
+  _ProductsOverviewScreenState() {
+    xPrint('_ProductsOverviewScreenState: constructor');
+  }
+
+  @override
+  void initState() {
+    xPrint('_ProductsOverviewScreenState: initState');
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    xPrint('_ProductsOverviewScreenState: dispose');
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    xPrint('_ProductsOverviewScreenState: didChangeDependencies');
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      xPrint('_ProductsOverviewScreenState: didChangeDependencies _isInit');
+      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+      _isInit = false;
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    xPrint('_ProductsOverviewScreenState: build');
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
@@ -71,10 +109,14 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: RefreshIndicator(
-          onRefresh: onRefresh,
-          child: ProductGrid(
-            showFavorite: _showOnlyFavorites,
+        child: Center(
+          child: RefreshIndicator(
+            onRefresh: onRefresh,
+            child: _isLoading
+                ? const CircularProgressIndicator()
+                : ProductGrid(
+                    showFavorite: _showOnlyFavorites,
+                  ),
           ),
         ),
       ),

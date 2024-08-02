@@ -61,7 +61,7 @@ class ProductItem extends StatelessWidget {
             },
           ),
           backgroundColor: Colors.black45,
-          title: Text(product.title?? ''),
+          title: Text(product.title ?? ''),
         ),
         child: GestureDetector(
           onTap: () {

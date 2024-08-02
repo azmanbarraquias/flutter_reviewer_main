@@ -17,14 +17,14 @@ class ProductGrid extends StatefulWidget {
 class _ProductGridState extends State<ProductGrid> {
   @override
   Widget build(BuildContext context) {
-    final Products productsProv = Provider.of<Products>(context,
+    final Products proProvider = Provider.of<Products>(context,
         listen: true); // refresh if product added new item.
-    final List<Product> products = widget.showFavorite
-        ? productsProv.favoritesItems
-        : productsProv.products;
+    final List<Product> products =
+        widget.showFavorite ? proProvider.favoritesItems : proProvider.products;
 
     return GridView.builder(
       itemCount: products.length,
+      padding: const EdgeInsets.only(top: 10),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 3 / 2,
