@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_reviewer_main/utils/xprint.dart';
 
 class AppLocalizations {
   final Locale locale;
@@ -45,7 +46,8 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   @override
   bool isSupported(Locale locale) {
     // Include all of your supported language codes here
-    return ['en', 'sk'].contains(locale.languageCode);
+    xPrint('isSupported: ${locale.languageCode}}');
+    return ['en', 'fil'].contains(locale.languageCode);
   }
 
   @override
@@ -53,6 +55,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
     // AppLocalization class is where the JSON loading actually runs
     AppLocalizations localizations = AppLocalizations(locale);
     await localizations.load();
+    xPrint('Future<AppLocalizations> ${locale.languageCode}}');
     return localizations;
   }
 

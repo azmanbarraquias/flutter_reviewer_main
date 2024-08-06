@@ -75,100 +75,47 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
     setStateLoading(true);
 
-// Editing, Update existing product
-    if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct);
-      setStateLoading(false);
-      Navigator.of(context).pop();
-    } else {
-      try {
-        await Provider.of<Products>(context, listen: false)
-            .addProduct(_editedProduct);
-      } catch (error) {
-        xPrint('_saveForm() $error');
-        await showDialog(
-            context: ctx,
-            builder: (ctx) => AlertDialog(
-                  title: const Text('An error occurred!'),
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('Message:'),
-                      const Gap(5),
-                      Text(
-                        '$error',
-                        style: const TextStyle(color: Colors.redAccent),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(),
-                        child: const Text('Close'))
-                  ],
-                ));
-      } finally {
-        setStateLoading(false);
-        Navigator.of(ctx).pop();
+    // Editing, Update existing product
+    try {
+      final product = Provider.of<Products>(context, listen: false);
+      if (_editedProduct.id != null) {
+        // Add Update Product
+        await product.updateProduct(_editedProduct);
+      } else {
+        // Add New Product
+        await product.addProduct(_editedProduct);
       }
-    }
-  }
-
-  Future<void> _saveForm1() async {
-    final isValid = _form.currentState?.validate();
-
-    if (!isValid!) {
-      return;
-    }
-
-    _form.currentState?.save();
-
-    xPrint(_editedProduct.title);
-    xPrint(_editedProduct.description);
-    xPrint(_editedProduct.price);
-    xPrint(_editedProduct.imageUrl);
-
-    setStateLoading(true);
-
-// Editing, Update existing product
-    if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct);
-      setStateLoading(false);
-      Navigator.of(context).pop();
-    } else {
-      await Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct)
-          .catchError((error) {
-        return showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-                  title: const Text('An error occurred!'),
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('Message:'),
-                      const Gap(5),
-                      Text(
-                        '$error',
-                        style: const TextStyle(color: Colors.redAccent),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Close'))
+    } catch (error) {
+      xPrint('_saveForm() $error');
+      await showDialog(
+          context: ctx,
+          builder: (ctx) => AlertDialog(
+                title: const Text('An error occurred!'),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Message:'),
+                    const Gap(5),
+                    Text(
+                      '$error',
+                      style: const TextStyle(color: Colors.redAccent),
+                    ),
                   ],
-                ));
-      }).then((v) {
-        setStateLoading(false);
-        Navigator.of(context).pop();
-      });
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.of(ctx).pop(),
+                      child: const Text('Close'))
+                ],
+              ));
     }
+    // finally {
+    //   setStateLoading(false);
+    //   Navigator.of(ctx).pop();
+    // }
+    setStateLoading(false);
+    Navigator.of(ctx).pop();
   }
 
   @override
@@ -181,11 +128,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void didChangeDependencies() {
     xPrint('didChangeDependencies');
-// _isInit
+    // _isInit
     if (_isInit) {
       final product = ModalRoute.of(context)?.settings.arguments as Product?;
 
-// if have product init that value
+      // if have product init that value
       if (product != null) {
         _editedProduct = Provider.of<Products>(
           context,
@@ -389,5 +336,60 @@ class _EditProductScreenState extends State<EditProductScreen> {
               ),
             ),
     );
+  }
+
+  Future<void> _saveForm1() async {
+    final isValid = _form.currentState?.validate();
+
+    if (!isValid!) {
+      return;
+    }
+
+    _form.currentState?.save();
+
+    xPrint(_editedProduct.title);
+    xPrint(_editedProduct.description);
+    xPrint(_editedProduct.price);
+    xPrint(_editedProduct.imageUrl);
+
+    setStateLoading(true);
+
+// Editing, Update existing product
+    if (_editedProduct.id != null) {
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_editedProduct);
+      setStateLoading(false);
+      Navigator.of(context).pop();
+    } else {
+      await Provider.of<Products>(context, listen: false)
+          .addProduct(_editedProduct)
+          .catchError((error) {
+        return showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text('An error occurred!'),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('Message:'),
+                      const Gap(5),
+                      Text(
+                        '$error',
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Close'))
+                  ],
+                ));
+      }).then((v) {
+        setStateLoading(false);
+        Navigator.of(context).pop();
+      });
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_reviewer_main/im_widget_lab/product_controller_getx.dart';
+import 'package:flutter_reviewer_main/utils/utils.dart';
 
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -11,18 +12,6 @@ import 'common_widget/keyboard_number.dart';
 
 void main() {
   runApp(const MyApp());
-}
-
-extension GetExtension on GetInterface {
-  S findOrPut<S>(S create, {String? tag, bool permanent = false}) {
-    return isRegistered<S>(tag: tag)
-        ? find<S>(tag: tag)
-        : put<S>(create, tag: tag, permanent: permanent);
-  }
-
-  Future<bool> findAndDelete<S>({String? tag, bool force = false}) async {
-    return isRegistered<S>(tag: tag) && await delete<S>(tag: tag, force: force);
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -43,8 +32,7 @@ class MyPage extends GetView<ProductController> {
   const MyPage({super.key});
 
   @override
-  ProductController get controller =>
-      Get.findOrPut<ProductController>(ProductController());
+  ProductController get controller => Get.findOrPut<ProductController>(ProductController());
 
   @override
   Widget build(BuildContext context) {

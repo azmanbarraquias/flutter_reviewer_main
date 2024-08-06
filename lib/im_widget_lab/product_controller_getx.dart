@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
 import '../utils/xprint.dart';
 

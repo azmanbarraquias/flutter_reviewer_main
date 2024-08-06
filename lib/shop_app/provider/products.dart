@@ -47,6 +47,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
+    // _products = [];
     const urlLink = 'myflutter-update-default-rtdb.firebaseio.com';
     final url = Uri.https(urlLink, '/products.json');
 
@@ -176,26 +177,51 @@ class Products with ChangeNotifier {
     return products.firstWhere((productProv) => productProv.id == productID);
   }
 
-  void updateProduct(Product productUpdate) {
+  Future<void> updateProduct(Product productUpdate) async {
+    const urlLink = 'myflutter-update-default-rtdb.firebaseio.com';
     final prodIndex =
         products.indexWhere((product) => product.id == productUpdate.id);
-    if (prodIndex >= 0) {
-      _products[prodIndex] = productUpdate;
-      notifyListeners();
-    } else {
-      xPrint('Product $prodIndex not found');
+    try {
+      if (prodIndex >= 0) {
+        final url = Uri.https(urlLink, '/products/${productUpdate.id}.json');
+
+        final response = await http.patch(url,
+            body: json.encoder.convert({
+              'title': productUpdate.title,
+              'description': productUpdate.description,
+              'imageUrl': productUpdate.imageUrl,
+              'price': productUpdate.price,
+              // 'isFavorite': productUpdate.isFavorite,
+            }));
+        _products[prodIndex] = productUpdate;
+
+        final responseFromServer = json.decoder.convert(response.body);
+        xPrint('updateProduct $responseFromServer');
+
+        notifyListeners();
+        // fetchAndSetProducts();
+      }
+    } catch (error) {
+      xPrint(error);
+      rethrow;
     }
   }
 
   void deleteProduct(Product productUpdate) {
-    final prodIndex =
+    final existingProductIndex =
         products.indexWhere((product) => product.id == productUpdate.id);
-    if (prodIndex >= 0) {
-      _products.removeAt(prodIndex);
+    Product? existingProduct = _products[existingProductIndex];
+    const urlLink = 'myflutter-update-default-rtdb.firebaseio.com';
+    final url = Uri.https(urlLink, '/products/${productUpdate.id}.json');
+    _products.removeAt(existingProductIndex);
+    notifyListeners();
+    
+    http.delete(url).then((_) {
+      existingProduct = null;
+    }).catchError((_) {
+      _products.insert(existingProductIndex, existingProduct!);
       notifyListeners();
-    } else {
-      xPrint('Product $prodIndex not found');
-    }
+    });
   }
 
   List<Product> get favoritesItems {

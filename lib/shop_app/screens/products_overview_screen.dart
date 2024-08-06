@@ -110,14 +110,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Center(
-          child: RefreshIndicator(
-            onRefresh: onRefresh,
-            child: _isLoading
-                ? const CircularProgressIndicator()
-                : ProductGrid(
-                    showFavorite: _showOnlyFavorites,
-                  ),
-          ),
+          child: _isLoading
+              ? const CircularProgressIndicator()
+              : ProductGrid(
+                  showFavorite: _showOnlyFavorites,
+                ),
         ),
       ),
     );

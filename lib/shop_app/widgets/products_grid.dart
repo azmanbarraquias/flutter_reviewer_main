@@ -22,20 +22,23 @@ class _ProductGridState extends State<ProductGrid> {
     final List<Product> products =
         widget.showFavorite ? proProvider.favoritesItems : proProvider.products;
 
-    return GridView.builder(
-      itemCount: products.length,
-      padding: const EdgeInsets.only(top: 10),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10),
-      itemBuilder: (ctx, i) {
-        return ChangeNotifierProvider.value(
-          value: products[i],
-          child: ProductItem(key: ValueKey(products[i].id)),
-        );
-      },
+    return RefreshIndicator(
+      onRefresh: () => proProvider.fetchAndSetProducts(),
+      child: GridView.builder(
+        itemCount: products.length,
+        padding: const EdgeInsets.only(top: 10),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 1,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10),
+        itemBuilder: (ctx, i) {
+          return ChangeNotifierProvider.value(
+            value: products[i],
+            child: ProductItem(key: ValueKey(products[i].id)),
+          );
+        },
+      ),
     );
   }
 }

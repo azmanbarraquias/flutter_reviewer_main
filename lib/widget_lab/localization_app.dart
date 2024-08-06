@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
+import '../utils/xprint.dart';
 import 'app_localizations.dart';
 
 void main() {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       // List all of the app's supported locales here. . .
       supportedLocales: const [
         Locale('en', 'US'),
-        Locale('fil', 'FIL'),
+        Locale('fil', 'PH'),
       ],
       // These delegate make sure that the localization data for the proper language is loaded
       localizationsDelegates: [
@@ -70,17 +71,25 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
+    final appLocalization = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.language))
         ],
-        title: Text(widget.title),
+        title: Text('${appLocalization?.translate('title')}:)'),
       ),
-      body:  SafeArea(
+      body: SafeArea(
         child: Center(
           // Start Here
-          child: Text('${AppLocalizations.of(context)?.translate('body_content')}:)'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('${appLocalization?.translate('body_content')}:)'),
+              Text(
+                  'Current Language:   ${appLocalization?.translate('current.language')}'),
+            ],
+          ),
         ),
       ),
     );
