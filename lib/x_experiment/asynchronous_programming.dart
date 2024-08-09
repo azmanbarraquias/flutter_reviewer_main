@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_reviewer_main/x_experiment/flutter_lifecycle.dart';
+import 'package:flutter_reviewer_main/utils/xprint.dart';
 import 'package:get/get.dart';
 
 void main() {

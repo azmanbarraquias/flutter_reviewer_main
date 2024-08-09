@@ -14,6 +14,8 @@ import 'screens/user_product_screen.dart';
 
 void main() => runApp(const MyApp());
 
+final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (ctx) => Cart()),
       ChangeNotifierProvider(create: (ctx) => Orders()),
     ];
+
 
     final themeData = ThemeData(
       primarySwatch: Colors.blue,
@@ -47,6 +50,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: providersList,
       child: MaterialApp(
+        scaffoldMessengerKey: scaffoldKey,
         title: 'MyShop',
         debugShowCheckedModeBanner: false,
         theme: themeData,

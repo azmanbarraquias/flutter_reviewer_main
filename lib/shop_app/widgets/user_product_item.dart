@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reviewer_main/shop_app/screens/edit_product_screen.dart';
+import 'package:flutter_reviewer_main/utils/xprint.dart';
+import 'package:flutter_reviewer_main/x_experiment/flutter_lifecycle.dart';
 import 'package:provider/provider.dart';
 
+import '../main_shop.dart';
 import '../provider/product.dart';
 import '../provider/products.dart';
 
@@ -42,8 +45,22 @@ class UserProductItem extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 )),
             IconButton(
-                onPressed: () {
-                  Provider.of<Products>(context, listen: false).deleteProduct(product);
+                onPressed: () async {
+                  Provider.of<Products>(context, listen: false)
+                      .deleteProduct(product)
+                      .then((_) {
+                    scaffoldKey.currentState?.showSnackBar(SnackBar(
+                      content: Text('${product.title} has been deleted'),
+                    ));
+                  }).catchError((error) {
+                    scaffoldKey.currentState?.showSnackBar(SnackBar(
+                      content: Text('$error'),
+                    ));
+                  });
+                  // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  //   content: Text('Yay! A SnackBar!'),
+                  //
+                  // ));
                 },
                 icon: const Icon(
                   Icons.delete,

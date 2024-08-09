@@ -1,5 +1,7 @@
 import 'dart:isolate';
 
+import 'package:flutter_reviewer_main/utils/xprint.dart';
+
 import '../../x_experiment/flutter_lifecycle.dart';
 import '../models/pokemon.dart';
 import '../models/pokemon_list.dart';

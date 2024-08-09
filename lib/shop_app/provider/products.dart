@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reviewer_main/shop_app/models/http_exception.dart';
+import 'package:flutter_reviewer_main/utils/xprint.dart';
 import 'package:flutter_reviewer_main/x_experiment/flutter_lifecycle.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -159,7 +161,7 @@ class Products with ChangeNotifier {
 // void showFev() {
 //   _showFavorites = true;
 //   notifyListeners();
-//
+//,
 // }
 //
 // void showAll() {
@@ -207,21 +209,57 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(Product productUpdate) {
-    final existingProductIndex =
-        products.indexWhere((product) => product.id == productUpdate.id);
-    Product? existingProduct = _products[existingProductIndex];
+  Future<void> deleteProduct(Product productUpdate) async {
+    // 200, 201, 300, 400, 500
     const urlLink = 'myflutter-update-default-rtdb.firebaseio.com';
     final url = Uri.https(urlLink, '/products/${productUpdate.id}.json');
-    _products.removeAt(existingProductIndex);
+
+    final index =
+        products.indexWhere((product) => product.id == productUpdate.id);
+    Product? tempProduct = products[index];
+    _products.removeAt(index);
     notifyListeners();
-    
-    http.delete(url).then((_) {
-      existingProduct = null;
-    }).catchError((_) {
-      _products.insert(existingProductIndex, existingProduct!);
+    try {
+      final response = await http.delete(url);
+      xPrint('deleteProduct statusCode: ${response.statusCode}');
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+      xPrint('deleteProduct ${tempProduct.title} has been deleted');
+      tempProduct = null;
+    } catch (error) {
+      _products.insert(index, tempProduct!);
+      notifyListeners();
+      throw HttpException(error.toString());
+      // rethrow;
+      // rethrow;
+    }
+  }
+
+  Future<void> deleteProduct1(Product productUpdate) async {
+    // 200, 201, 300, 400, 500
+    const urlLink = 'myflutter-update-default-rtdb.firebaseio.com';
+    final url = Uri.https(urlLink, '/products/${productUpdate.id}.json');
+
+    final index =
+        products.indexWhere((product) => product.id == productUpdate.id);
+    Product? tempProduct = products[index];
+
+    var test = await http.delete(url).then((m) {
+      if (m.statusCode >= 400) {
+        xPrint('deleteProduct error: ${m.statusCode}');
+      }
+
+      xPrint('deleteProduct ${tempProduct?.title} has been deleted');
+      tempProduct = null;
+    }).catchError((error) {
+      xPrint('deleteProduct error: $error');
+      _products.insert(index, tempProduct!);
       notifyListeners();
     });
+    xPrint('deleteProduct $test');
+    _products.removeAt(index);
+    notifyListeners();
   }
 
   List<Product> get favoritesItems {

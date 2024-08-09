@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reviewer_main/utils/xprint.dart';
 
 void main() {
   runApp(HomeHeader());
@@ -101,8 +102,3 @@ class _HomeBodyState extends State<HomeBody> with WidgetsBindingObserver {
   }
 }
 
-void xPrint(dynamic value) {
-  if (kDebugMode) {
-    print('azman>$value');
-  }
-}
