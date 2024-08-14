@@ -7,14 +7,9 @@ import 'product.dart';
 class Cart with ChangeNotifier {
   final Map<String, CartProduct> _items = {};
 
-  Map<String, CartProduct> get items {
-    return {..._items};
-  }
+  Map<String, CartProduct> get items => {..._items};
 
   get total => _items.values.reduce((sum, element) => sum.total + element);
-
-
-
 
   void addToCart(Product product) {
     if (_items.containsKey(product.id)) {
