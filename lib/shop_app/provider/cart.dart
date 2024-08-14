@@ -11,6 +11,11 @@ class Cart with ChangeNotifier {
     return {..._items};
   }
 
+  get total => _items.values.reduce((sum, element) => sum.total + element);
+
+
+
+
   void addToCart(Product product) {
     if (_items.containsKey(product.id)) {
       _items.update(
@@ -67,7 +72,7 @@ class Cart with ChangeNotifier {
     double total = 0.0;
 
     _items.forEach((key, cartItem) {
-      total += cartItem.product.price ?? 0 * cartItem.quantity;
+      total += cartItem.product.price! * cartItem.quantity;
     });
 
     return total;

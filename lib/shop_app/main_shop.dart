@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (ctx) => Orders()),
     ];
 
-
     final themeData = ThemeData(
       primarySwatch: Colors.blue,
       appBarTheme: AppBarTheme(

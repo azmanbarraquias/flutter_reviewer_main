@@ -33,9 +33,20 @@ Future<String> fetchUserOrder() {
 }
 
 void main() {
-  print('Start');
-  print(createOrderMessage());
-  print('End');
+  // print('Start');
+  // print(createOrderMessage());
+  // print('End');
+
+  Map<String, int> salary = {
+    "user1": 100,
+    "user2": 200,
+    "user3": 300,
+    "user4": 400,
+  };
+
+  var values = salary.values.toList();
+  var result = values.reduce((sum, element) => sum + element);
+  print(result);
 }
 
 Future<void> pleaseWait() async {
