@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reviewer_main/shop_app/provider/auth.dart';
 
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ import 'screens/orders_screen.dart';
 import 'screens/products_details_screen.dart';
 import 'screens/products_overview_screen.dart';
 import 'screens/user_product_screen.dart';
+import 'screens/auth_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final providersList = [
+      ChangeNotifierProvider(create: (ctx) => Auth()),
       ChangeNotifierProvider(create: (ctx) => Products()),
       ChangeNotifierProvider(create: (ctx) => Cart()),
       ChangeNotifierProvider(create: (ctx) => Orders()),
@@ -53,7 +56,7 @@ class MyApp extends StatelessWidget {
         title: 'MyShop',
         debugShowCheckedModeBanner: false,
         theme: themeData,
-        home: const ProductsOverviewScreen(),
+        home: const AuthScreen(),
         routes: routeList,
       ),
     );

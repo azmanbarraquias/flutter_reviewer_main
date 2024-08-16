@@ -63,7 +63,7 @@ class Products with ChangeNotifier {
           id: productId,
           title: productData['title'],
           description: productData['description'],
-          price: num.tryParse(productData['price'].toString()),
+          price: double.tryParse(productData['price'].toString()),
           isFavorite: productData['isFavorite'],
           imageUrl: productData['imageUrl'],
         ));

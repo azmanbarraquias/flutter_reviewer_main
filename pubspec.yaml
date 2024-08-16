@@ -80,6 +80,7 @@ dependencies:
   flutter_localization: any # ^0.2.1 https://pub.dev/packages/flutter_localization
   characters: any # ^1.3.0  https://pub.dev/packages/characters
   connectivity_plus: any # ^6.0.4 https://pub.dev/packages/connectivity_plus
+  shimmer_animation: any # ^2.2.1 https://pub.dev/packages/shimmer_animation
 
 
 dev_dependencies:
