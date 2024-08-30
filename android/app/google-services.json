@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "884292096756",
+    "firebase_url": "https://myflutter-update-default-rtdb.firebaseio.com",
+    "project_id": "myflutter-update",
+    "storage_bucket": "myflutter-update.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884292096756:android:b64a932d18a3a3176e04a1",
+        "android_client_info": {
+          "package_name": "com.example.flutter_reviewer_main"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcTsLQvfH1JL4XvnRt9Si2qCrmQRq9sXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884292096756:android:2f912a7329761c236e04a1",
+        "android_client_info": {
+          "package_name": "com.flutterreviewwer.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcTsLQvfH1JL4XvnRt9Si2qCrmQRq9sXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

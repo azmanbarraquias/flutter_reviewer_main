@@ -16,11 +16,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {},
-        child: const GridViewSample(),
-      ),
+    return const Center(
+      child: GridViewSample(),
     );
   }
 }

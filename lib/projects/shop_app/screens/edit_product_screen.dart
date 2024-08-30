@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reviewer_main/utils/xprint.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/xprint.dart';
 import '../provider/product.dart';
 import '../provider/products.dart';
 
@@ -336,60 +336,5 @@ class _EditProductScreenState extends State<EditProductScreen> {
               ),
             ),
     );
-  }
-
-  Future<void> _saveForm1() async {
-    final isValid = _form.currentState?.validate();
-
-    if (!isValid!) {
-      return;
-    }
-
-    _form.currentState?.save();
-
-    xPrint(_editedProduct.title);
-    xPrint(_editedProduct.description);
-    xPrint(_editedProduct.price);
-    xPrint(_editedProduct.imageUrl);
-
-    setStateLoading(true);
-
-// Editing, Update existing product
-    if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct);
-      setStateLoading(false);
-      Navigator.of(context).pop();
-    } else {
-      await Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct)
-          .catchError((error) {
-        return showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-                  title: const Text('An error occurred!'),
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('Message:'),
-                      const Gap(5),
-                      Text(
-                        '$error',
-                        style: const TextStyle(color: Colors.redAccent),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Close'))
-                  ],
-                ));
-      }).then((v) {
-        setStateLoading(false);
-        Navigator.of(context).pop();
-      });
-    }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../dart_coding_practice/dart_main.dart';
+import '../../dart_coding_practice/dart_main.dart';
 import 'src/widget_with_codeview.dart';
 
 void main() {

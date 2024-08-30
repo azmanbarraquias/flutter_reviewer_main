@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_reviewer_main/shop_app/provider/product.dart';
+import 'package:flutter_reviewer_main/projects/shop_app/provider/product.dart';
 import 'package:flutter_reviewer_main/utils/xprint.dart';
 
 import '../models/cart_product.dart';
@@ -24,7 +24,7 @@ class Orders with ChangeNotifier {
       xPrint(extractedData);
       final List<Order> loadedOrders = [];
       final products = extractedData as Map<String, dynamic>?;
-      if(products == null) {
+      if (products == null) {
         return;
       }
       products.forEach((orderId, orderData) {
@@ -85,7 +85,9 @@ class Orders with ChangeNotifier {
               products: cartProduct,
               dateTime: DateTime.now()));
       notifyListeners();
-    } catch (error) {}
+    } catch (error) {
+      xPrint(error);
+    }
   }
 
   void clear() {

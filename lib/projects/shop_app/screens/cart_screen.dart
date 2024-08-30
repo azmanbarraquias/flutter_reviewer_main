@@ -86,12 +86,13 @@ class _OrderButtonState extends State<OrderButton> {
                 ? null
                 : () async {
                     setState(() => isLoading = true);
+                    final navigation = Navigator.of(context);
                     await Provider.of<Orders>(context, listen: false).addOrder(
                         widget.cart.items.values.toList(),
                         widget.cart.totalAmount);
                     setState(() => isLoading = false);
                     widget.cart.clear();
-                    Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                    navigation.pushNamed(OrdersScreen.routeName);
                   },
             child: const Text('Order now'));
   }

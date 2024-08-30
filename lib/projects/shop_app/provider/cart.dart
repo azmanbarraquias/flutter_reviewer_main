@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_reviewer_main/utils/xprint.dart';
 
-import '../../utils/xprint.dart';
 import '../models/cart_product.dart';
 import 'product.dart';
 

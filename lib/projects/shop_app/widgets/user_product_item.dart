@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reviewer_main/shop_app/screens/edit_product_screen.dart';
-import 'package:flutter_reviewer_main/utils/xprint.dart';
-import 'package:flutter_reviewer_main/x_experiment/flutter_lifecycle.dart';
+import 'package:flutter_reviewer_main/projects/shop_app/screens/edit_product_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../main_shop.dart';
+import '../main.dart';
 import '../provider/product.dart';
 import '../provider/products.dart';
 

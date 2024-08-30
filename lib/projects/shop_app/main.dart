@@ -1,8 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reviewer_main/shop_app/provider/auth.dart';
-
+import 'package:flutter_reviewer_main/firebase_options.dart';
+import 'package:flutter_reviewer_main/projects/shop_app/provider/auth.dart';
 import 'package:provider/provider.dart';
-
 import 'provider/cart.dart';
 import 'provider/orders.dart';
 import 'provider/products.dart';
@@ -10,11 +10,15 @@ import 'screens/cart_screen.dart';
 import 'screens/edit_product_screen.dart';
 import 'screens/orders_screen.dart';
 import 'screens/products_details_screen.dart';
-import 'screens/products_overview_screen.dart';
 import 'screens/user_product_screen.dart';
 import 'screens/auth_screen.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  runApp(const MyApp());
+}
 
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -50,15 +54,17 @@ class MyApp extends StatelessWidget {
     };
 
     return MultiProvider(
-      providers: providersList,
-      child: MaterialApp(
-        scaffoldMessengerKey: scaffoldKey,
-        title: 'MyShop',
-        debugShowCheckedModeBanner: false,
-        theme: themeData,
-        home: const AuthScreen(),
-        routes: routeList,
-      ),
-    );
+        providers: providersList,
+        child: Consumer<Auth>(builder: (ctx, auth, _) {
+          return MaterialApp(
+            scaffoldMessengerKey: scaffoldKey,
+            title: 'MyShop',
+            debugShowCheckedModeBanner: false,
+            theme: themeData,
+            home:
+                auth.isAuth ? const ProductDetailsScreen() : const AuthScreen(),
+            routes: routeList,
+          );
+        }));
   }
 }

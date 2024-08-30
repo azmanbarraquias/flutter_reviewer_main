@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_reviewer_main/shop_app/provider/auth.dart';
+import 'package:flutter_reviewer_main/projects/shop_app/provider/auth.dart';
 import 'package:flutter_reviewer_main/utils/xprint.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_reviewer_main/projects/shop_app/models/http_exception.dart';
 
 enum AuthMode { signup, login }
 
@@ -94,15 +95,17 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+
   AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
+
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() async {
+  Future<void> _submit() async {
     xPrint('_submit');
     if (!_formKey.currentState!.validate()) {
       // Invalid!
@@ -114,15 +117,28 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.login) {
-      // Log user in
-    } else {
-      // Sign user up
-      await Provider.of<Auth>(context, listen: false).signup(
-        email: _authData['email'],
-        password: _authData['password'],
-      );
+    try {
+      if (_authMode == AuthMode.login) {
+        // Log user in
+        await Provider.of<Auth>(context, listen: false).signIn(
+          email: _authData['email']!,
+          password: _authData['password']!,
+        );
+      } else {
+        // Sign user up
+        await Provider.of<Auth>(context, listen: false).signUp(
+          email: _authData['email']!,
+          password: _authData['password']!,
+        );
+      }
+    } on HttpException catch (error) {
+      xPrint(error);
+      _showErrorDialog(error.toString());
+    } catch (error) {
+      _showErrorDialog(error.toString());
+      xPrint(error);
     }
+
     setState(() {
       _isLoading = false;
     });
@@ -138,6 +154,24 @@ class _AuthCardState extends State<AuthCard> {
         _authMode = AuthMode.login;
       });
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text('An Error Occured'),
+            content: Text(message),
+            actions: [
+              OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: const Text('Close'))
+            ],
+          );
+        });
   }
 
   @override
