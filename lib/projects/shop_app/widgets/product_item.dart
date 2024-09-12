@@ -70,10 +70,15 @@ class ProductItem extends StatelessWidget {
               arguments: product,
             );
           },
-          child: CachedNetworkImage(
-            placeholder: (ctx, str) => const CircularProgressIndicator(),
-            imageUrl: product.imageUrl ?? '',
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: product.id!,
+            child: FadeInImage(
+              placeholder: const AssetImage('assets/pls_wait.png'),
+              fit: BoxFit.cover,
+              image: NetworkImage(
+                product.imageUrl ?? '',
+              ),
+            ),
           ),
         ),
       ),

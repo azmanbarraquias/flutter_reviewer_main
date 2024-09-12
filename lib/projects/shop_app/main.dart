@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reviewer_main/firebase_options.dart';
+import 'package:flutter_reviewer_main/projects/shop_app/helper/custom_route.dart';
 import 'package:flutter_reviewer_main/projects/shop_app/provider/auth.dart';
+import 'package:flutter_reviewer_main/projects/shop_app/screens/products_overview_screen.dart';
 import 'package:provider/provider.dart';
 import 'provider/cart.dart';
 import 'provider/orders.dart';
@@ -36,6 +38,10 @@ class MyApp extends StatelessWidget {
 
     final themeData = ThemeData(
       primarySwatch: Colors.blue,
+      pageTransitionsTheme: PageTransitionsTheme(builders: {
+        TargetPlatform.android: CustomPageTransitionBuilder(),
+        // TargetPlatform.iOS: CustomPageTransitionBuilder(),
+      }),
       appBarTheme: AppBarTheme(
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.blue,
@@ -46,6 +52,7 @@ class MyApp extends StatelessWidget {
     );
 
     final routeList = {
+      ProductsOverviewScreen.routeName: (ctx) => const ProductsOverviewScreen(),
       ProductDetailsScreen.routeName: (ctx) => const ProductDetailsScreen(),
       CartScreen.routeName: (ctx) => const CartScreen(),
       OrdersScreen.routeName: (ctx) => const OrdersScreen(),
