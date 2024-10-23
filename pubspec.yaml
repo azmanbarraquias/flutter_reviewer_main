@@ -25,14 +25,15 @@ version: 1.0.0+1
 
 #  Dart Version Use
 environment:
-  # indicate that your project works with Flutter 3.5.3 or higher but not version 4.0.0.
-  sdk: '>=3.5.3 <4.0.0'  # Dart SDK Version
-  flutter: '>=3.24.3'  # Flutter SDK Version
+  # indicate that your project works with Flutter 3.4.1 or higher but not version 4.0.0.
+  sdk: '>=3.4.1 <4.0.0'  # Dart SDK Version
+  flutter: '>=3.22.1'  # Flutter SDK Version
 
-#  Flutter 3.24.3 • channel stable • https://github.com/flutter/flutter.git
-#  Framework • revision 2663184aa7 (31 hours ago) • 2024-09-11 16:27:48 -0500
-#  Engine • revision 36335019a8
-#  Tools • Dart 3.5.3 • DevTools 2.37.3
+#  Flutter 3.22.1 • channel stable • https://github.com/flutter/flutter.git
+#  Framework • revision a14f74ff3a (7 days ago) • 2024-05-22 11:08:21 -0500
+#  Engine • revision 55eae6864b
+#  Tools • Dart 3.4.1 • DevTools 2.34.3
+
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -51,7 +52,7 @@ dependencies:
   cupertino_icons: any # Only required if you use Cupertino (iOS style) icons
   provider: any
   tuple: any
-  device_preview: any
+  device_preview: ^1.2.0
   feedback: any
 
   flutter_glow: any
@@ -85,7 +86,7 @@ dependencies:
   fluttertoast: any # ^8.2.8 https://pub.dev/packages/fluttertoast
   shared_preferences: any # ^2.3.2 https://pub.dev/packages/shared_preferences
   mix: any # ^1.4.6 https://pub.dev/packages/mix
-  text_marquee: any
+  text_marquee: ^0.0.2
 
 
 dev_dependencies:
