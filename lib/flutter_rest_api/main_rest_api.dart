@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: HomePageSimple(),
-      // home: HomePageYugiOh(),
+      // home: HomePageSimple(),
+      home: HomePageYugiOh(),
       // home: HomePagePokemon(),
     );
   }
